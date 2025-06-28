@@ -2,6 +2,10 @@ from flask import Flask, render_template, request, redirect, url_for
 
 app = Flask(__name__)
 
+@app.route('/')
+def index():
+    return redirect(url_for('calculadora'))
+
 @app.route('/calculadora', methods=['GET', 'POST'])
 def calculadora():
     resultado = None
@@ -16,7 +20,11 @@ def calculadora():
         elif operacion == 'multiplicacion':
             resultado = num1 * num2
         elif operacion == 'division':
-            resultado = num1 / num2
+            if num2 != 0:
+                resultado = num1 / num2
+            else:
+                resultado = "Error: División por cero"
     return render_template('calculadora.html', resultado=resultado)
+
 if __name__ == '__main__':
     app.run(debug=True) 
